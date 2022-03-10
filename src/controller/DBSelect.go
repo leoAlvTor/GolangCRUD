@@ -6,10 +6,8 @@ import (
 	"fmt"
 )
 
-func GetAll(db *sql.DB, query string, params []interface{}) ([]model.Album, error) {
-
-	var albums []model.Album
-	fmt.Println(params)
+func Get(db *sql.DB, query string, params []interface{}) ([]interface{}, error) {
+	var objects []interface{}
 	rows, err := db.Query(query, params...)
 	if err != nil {
 		return nil, fmt.Errorf("error while executing statement: %v", err)
@@ -20,11 +18,10 @@ func GetAll(db *sql.DB, query string, params []interface{}) ([]model.Album, erro
 		if err := rows.Scan(&album.ID, &album.Title, &album.Artist, &album.Price); err != nil {
 			return nil, fmt.Errorf("error while reading rows, error %v", err)
 		}
-		albums = append(albums, album)
+		objects = append(objects, album)
 	}
 	if err := rows.Err(); err != nil {
 		return nil, fmt.Errorf("error with rows: %v", err)
 	}
-
-	return albums, nil
+	return objects, nil
 }
