@@ -37,3 +37,27 @@ func Add(db *sql.DB, query string, params []interface{}) (int64, error) {
 	}
 	return id, nil
 }
+
+func Delete(db *sql.DB, query string, params []interface{}) (int64, error) {
+	result, err := db.Exec(query, params)
+	if err != nil {
+		return 0, fmt.Errorf("error: error while deleting a record: %v", err)
+	}
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return 0, fmt.Errorf("error: error while getting rowsAffected: %v", err)
+	}
+	return rowsAffected, nil
+}
+
+func Update(db *sql.DB, query string, params []interface{}) (int64, error) {
+	result, err := db.Exec(query, params)
+	if err != nil {
+		return 0, fmt.Errorf("error: error while updating a record: %v", err)
+	}
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return 0, fmt.Errorf("error: error while getting rowsAffected: %v", err)
+	}
+	return rowsAffected, nil
+}
