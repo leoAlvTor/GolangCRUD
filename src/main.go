@@ -7,7 +7,17 @@ import (
 	"fmt"
 )
 
-//This method inserts a dummy value
+// This method update a dummy value
+func testUpdate(dbConnection *sql.DB) {
+	rows, err := controller.Update(dbConnection, "UPDATE album set title = ? where artist = ?", []interface{}{"UPDATE_TITULO", "John Coltrane"})
+	fmt.Println(err)
+	if err != nil {
+		_ = fmt.Errorf("error: %v", err)
+	}
+	fmt.Printf("Info: Rows affected -> %d\n", rows)
+}
+
+// This method inserts a dummy value
 func testInsert(dbConnection *sql.DB) {
 	var price float64 = 1.54556
 	rows, err := controller.Add(dbConnection, "INSERT INTO album(title, artist, price) VALUES(?, ?, ?)", []interface{}{"Titulo", "ARTISTA", price})
@@ -40,7 +50,12 @@ func testSelectWithParams(dbConnection *sql.DB) {
 func main() {
 	dbConnection := controller.Connect()
 	//testSelectWithParams(dbConnection)
-	testSelectAll(dbConnection)
+	//testSelectAll(dbConnection)
 	//testInsert(dbConnection)
+
+	testSelectAll(dbConnection)
+	fmt.Println("<---------------------->")
+	testUpdate(dbConnection)
+	testSelectAll(dbConnection)
 	controller.Disconnect()
 }
