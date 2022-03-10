@@ -7,12 +7,20 @@ import (
 	"fmt"
 )
 
+// This method delete a row
+func testDelete(dbConnection *sql.DB) {
+	rows, err := controller.Delete(dbConnection, "DELETE from album where id = ?", []interface{}{7})
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf("INFO: Rows affected -> %d\n", rows)
+}
+
 // This method update a dummy value
 func testUpdate(dbConnection *sql.DB) {
 	rows, err := controller.Update(dbConnection, "UPDATE album set title = ? where artist = ?", []interface{}{"UPDATE_TITULO", "John Coltrane"})
-	fmt.Println(err)
 	if err != nil {
-		_ = fmt.Errorf("error: %v", err)
+		fmt.Println(err)
 	}
 	fmt.Printf("Info: Rows affected -> %d\n", rows)
 }
@@ -55,7 +63,8 @@ func main() {
 
 	testSelectAll(dbConnection)
 	fmt.Println("<---------------------->")
-	testUpdate(dbConnection)
+	//testUpdate(dbConnection)
+	testDelete(dbConnection)
 	testSelectAll(dbConnection)
-	controller.Disconnect()
+
 }
