@@ -25,3 +25,15 @@ func Get(db *sql.DB, query string, params []interface{}) ([]interface{}, error) 
 	}
 	return objects, nil
 }
+
+func Add(db *sql.DB, query string, params []interface{}) (int64, error) {
+	result, err := db.Exec(query, params...)
+	if err != nil {
+		return 0, fmt.Errorf("error: error while adding a new record: %v", err)
+	}
+	id, err := result.LastInsertId()
+	if err != nil {
+		return 0, fmt.Errorf("error: error while getting lastInsertId: %v", err)
+	}
+	return id, nil
+}
