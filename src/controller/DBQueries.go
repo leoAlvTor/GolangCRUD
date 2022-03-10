@@ -39,7 +39,7 @@ func Add(db *sql.DB, query string, params []interface{}) (int64, error) {
 }
 
 func Delete(db *sql.DB, query string, params []interface{}) (int64, error) {
-	result, err := db.Exec(query, params)
+	result, err := db.Exec(query, params...)
 	if err != nil {
 		return 0, fmt.Errorf("error: error while deleting a record: %v", err)
 	}
@@ -51,7 +51,7 @@ func Delete(db *sql.DB, query string, params []interface{}) (int64, error) {
 }
 
 func Update(db *sql.DB, query string, params []interface{}) (int64, error) {
-	result, err := db.Exec(query, params)
+	result, err := db.Exec(query, params...)
 	if err != nil {
 		return 0, fmt.Errorf("error: error while updating a record: %v", err)
 	}
