@@ -37,34 +37,13 @@ func testInsert(dbConnection *sql.DB) {
 
 // This method queries all albums
 func testSelectAll(dbConnection *sql.DB) {
-	var albums []interface{}
-	albums, _ = controller.Get(dbConnection, "SELECT * FROM album", []interface{}{})
-	for _, tmp := range albums {
-		album, _ := tmp.(model.Album)
-		fmt.Printf("Album ID: %d,\nalbum title: %s,\nalbum artist: %s,\nalbum price: %f\n", album.ID, album.Title, album.Artist, album.Price)
-	}
-}
+	rows := controller.Get(dbConnection, "SELECT * FROM FACTURACABECERA", []interface{}{})
+	facturas := model.MapRowsToFacturaCabecera(rows)
+	fmt.Println(facturas)
 
-// This method queries all albums from where artist is John Coltrane and price is greater or equal than $56
-func testSelectWithParams(dbConnection *sql.DB) {
-	var albums []interface{}
-	albums, _ = controller.Get(dbConnection, "SELECT * FROM album WHERE artist = ? and price >= ?", []interface{}{"John Coltrane", "56"})
-	for _, tempAlbum := range albums {
-		album, _ := tempAlbum.(model.Album)
-		fmt.Printf("Album ID: %d,\nalbum title: %s,\nalbum artist: %s,\nalbum price: %f\n", album.ID, album.Title, album.Artist, album.Price)
-	}
 }
 
 func main() {
 	dbConnection := controller.Connect()
-	//testSelectWithParams(dbConnection)
-	//testSelectAll(dbConnection)
-	//testInsert(dbConnection)
-
 	testSelectAll(dbConnection)
-	fmt.Println("<---------------------->")
-	//testUpdate(dbConnection)
-	testDelete(dbConnection)
-	testSelectAll(dbConnection)
-
 }
